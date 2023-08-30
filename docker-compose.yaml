@@ -1,0 +1,55 @@
+version: "3"
+services:
+#  app:
+#    build:
+#      context: .
+#      dockerfile: build/Dockerfile.app
+#      args:
+#        - target=dev
+#    env_file: .env
+#    volumes:
+#      - .:/app
+#      - ~/.config/gcloud:/root/.config/gcloud
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - mysql
+
+  mysql:
+    build:
+      context: .
+      dockerfile: build/Dockerfile.mysql
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      # MYSQL_ROOT_PASSWORD: pass
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+      MYSQL_DATABASE: webapp_localhost
+      TZ: Asia/Tokyo
+    #    volumes:
+    #      - ./build/sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    container_name: mysql
+
+  migrate:
+    container_name: migrate
+    build:
+      context: .
+      dockerfile: build/Dockerfile.migrate
+    working_dir: /app
+    environment:
+      GO_ENV: localhost
+      MYSQL_USER_NAME: user
+      MYSQL_USER_PASS: pass
+      DB_NAME: webapp_localhost
+      DB_HOST: mysql
+      WAIT_LOGGER_LEVEL: debug
+      WAIT_HOSTS: mysql:3306
+      WAIT_TIMEOUT: 120
+    volumes:
+      - .:/app
+    tty: true
+    depends_on:
+      - mysql
