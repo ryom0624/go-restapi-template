@@ -1,0 +1,49 @@
+
+# list
+GET http://localhost:8080/user_defined_record/list?limit=20&offset=0
+
+###
+
+# get one
+GET http://localhost:8080/user_defined_record/1
+
+###
+POST http://localhost:8080/user_defined_record/
+
+{
+    "item_name": "体重",
+    "unit_type": 1
+}
+
+###
+POST http://localhost:8080/user_defined_record/
+
+{
+    "item_name": "血圧",
+    "unit_type": 2
+}
+
+###
+POST http://localhost:8080/user_defined_record/
+
+{
+    "item_name": "腕立て伏せ",
+    "unit_type": 3
+}
+
+###
+POST http://localhost:8080/user_defined_record/
+
+{
+    "item_name": "ランニング",
+    "unit_type": 4
+}
+
+
+###
+# delete
+DELETE http://localhost:8080/user_defined_record/
+
+{
+    "id": 1
+}
